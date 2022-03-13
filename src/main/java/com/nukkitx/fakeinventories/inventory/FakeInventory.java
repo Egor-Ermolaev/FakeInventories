@@ -76,7 +76,9 @@ public abstract class FakeInventory extends ContainerInventory {
     @Override
     public void onClose(Player who) {
         super.onClose(who);
-        open.remove(who, this);
+        Server.getInstance().getScheduler().scheduleDelayedTask(() -> {
+            open.remove(who, this);
+        }, 2, false);
 
         List<BlockVector3> blocks = blockPositions.get(who);
 
@@ -92,7 +94,7 @@ public abstract class FakeInventory extends ContainerInventory {
                 updateBlock.z = blockPosition.getFloorZ();
 
                 who.dataPacket(updateBlock);
-            }, 2 + i, false);
+            }, 3 + i, false);
         }
     }
 
